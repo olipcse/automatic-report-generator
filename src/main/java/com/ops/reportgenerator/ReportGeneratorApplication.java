@@ -2,12 +2,19 @@ package com.ops.reportgenerator;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.time.chrono.JapaneseChronology;
+import java.time.chrono.JapaneseDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -42,17 +49,38 @@ public class ReportGeneratorApplication {
 			FileInputStream fis = new FileInputStream("file/test.docx");
 			XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
 			Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
+			String dayString = "日";
+			LocalDate date = LocalDate.now();
+			
 			while (bodyElementIterator.hasNext()) {
 				IBodyElement element = (IBodyElement) bodyElementIterator.next();
 
 				if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
 					List<XWPFTable> tableList = element.getBody().getTables();
 					tableList.get(0).getRow(1).getCell(0).setText("sdfsdg");
+					
 					tableList.get(0).getRow(1).getCell(0).removeParagraph(0);
 					XWPFParagraph addParagraph = tableList.get(0).getRow(1).getCell(0).addParagraph();
+//					addParagraph.setAlignment(ParagraphAlignment.RIGHT);  
 				       XWPFRun run = addParagraph.createRun();
-				       run.setText("my name");
-					System.out.println(tableList.get(0).getRow(1).getCell(0).getText()+" fromdd");
+				       run.setText(date.getDayOfMonth()+dayString);
+				       DateTimeFormatter japaneseEraDtf = DateTimeFormatter.ofPattern("GGGGy年M月d日")
+				               .withChronology(JapaneseChronology.INSTANCE)
+				               .withLocale(Locale.JAPAN);
+
+				       
+				       
+				       LocalDate gregorianDate = LocalDate.parse(date.toString());
+				       JapaneseDate japaneseDate = JapaneseDate.from(gregorianDate);
+				       String hidzuke =japaneseDate.format(japaneseEraDtf);
+				       System.out.println(hidzuke+"nihon date");
+				       
+						tableList.get(0).getRow(1).getCell(2).removeParagraph(0);
+						 addParagraph = tableList.get(0).getRow(1).getCell(2).addParagraph();
+						 addParagraph.setAlignment(ParagraphAlignment.RIGHT);
+					        run = addParagraph.createRun();
+					       run.setText(hidzuke);
+					System.out.println(tableList.get(0).getRow(1).getCell(0).getText()+" fromdd"+japaneseEraDtf);
 					
 					for (XWPFTable table : tableList) {
 						System.out.println("Total Number of Rows of Table:" + table.getNumberOfRows());
