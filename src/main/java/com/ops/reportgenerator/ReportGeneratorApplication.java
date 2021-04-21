@@ -50,6 +50,7 @@ public class ReportGeneratorApplication {
 			XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
 			Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
 			String dayString = "日";
+			String name ="オリップsd";
 			LocalDate date = LocalDate.now();
 			
 			while (bodyElementIterator.hasNext()) {
@@ -61,6 +62,7 @@ public class ReportGeneratorApplication {
 					
 					tableList.get(0).getRow(1).getCell(0).removeParagraph(0);
 					XWPFParagraph addParagraph = tableList.get(0).getRow(1).getCell(0).addParagraph();
+					addParagraph.setStyle("LO-normal");
 //					addParagraph.setAlignment(ParagraphAlignment.RIGHT);  
 				       XWPFRun run = addParagraph.createRun();
 				       run.setText(date.getDayOfMonth()+dayString);
@@ -77,9 +79,25 @@ public class ReportGeneratorApplication {
 				       
 						tableList.get(0).getRow(1).getCell(2).removeParagraph(0);
 						 addParagraph = tableList.get(0).getRow(1).getCell(2).addParagraph();
+						 addParagraph.setStyle("LO-normal");
 						 addParagraph.setAlignment(ParagraphAlignment.RIGHT);
 					        run = addParagraph.createRun();
 					       run.setText(hidzuke);
+					       
+							tableList.get(0).getRow(0).getCell(1).removeParagraph(0);
+							 addParagraph = tableList.get(0).getRow(0).getCell(1).addParagraph();
+							 addParagraph.setStyle("LO-normal");
+							 addParagraph.setAlignment(ParagraphAlignment.CENTER);
+						        run = addParagraph.createRun();
+						       run.setText("＜"+name+"の本日の業務ご報告＞");
+						    
+								tableList.get(0).getRow(3).getCell(2).removeParagraph(0);
+								 addParagraph = tableList.get(0).getRow(3).getCell(2).addParagraph();
+							
+								 addParagraph.setStyle("LO-normal");
+								 addParagraph.setAlignment(ParagraphAlignment.RIGHT);
+							        run = addParagraph.createRun();
+							       run.setText(name);
 					System.out.println(tableList.get(0).getRow(1).getCell(0).getText()+" fromdd"+japaneseEraDtf);
 					
 					for (XWPFTable table : tableList) {
