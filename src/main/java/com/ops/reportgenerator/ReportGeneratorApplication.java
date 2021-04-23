@@ -107,12 +107,12 @@ public class ReportGeneratorApplication {
 	
 	public static void main(String[] args) {
 		
-		try {
-			test();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			test();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		SpringApplication.run(ReportGeneratorApplication.class, args);
 	}
 

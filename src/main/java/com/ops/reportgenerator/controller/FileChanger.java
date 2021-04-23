@@ -1,7 +1,9 @@
 package com.ops.reportgenerator.controller;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.chrono.JapaneseChronology;
 import java.time.chrono.JapaneseDate;
@@ -19,6 +21,8 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,15 +33,19 @@ import com.ops.reportgenerator.entitites.GetDoc;
 @RestController
 @RequestMapping("/changeReport")
 public class FileChanger {
-	@PostMapping(value="/single_download",consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public static void test(@RequestBody GetDoc body) throws Exception{
+	@CrossOrigin(origins = "http://localhost:3000")
+	@PostMapping(value="/single_download",consumes = { "multipart/form-data" })
+	public static void test( @ModelAttribute GetDoc body) throws Exception{
 
 //		   System.out.println(extractor.getText());
-		System.out.println("hdshgfsgfh");
-		
+		System.out.println("hdshgfsgfh"+body.getFile());
+//		body.getFile().transferTo(tempFile);
+//		InputStream stream = new FileInputStream(tempFile);
+		InputStream inputStream =  new BufferedInputStream(body.getFile().getInputStream());
+		System.out.println(body.getName()+"input stream"+inputStream);
 		try {
 			FileInputStream fis = new FileInputStream("file/test.docx");
-			XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+			XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(inputStream));
 			Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
 			String dayString = "日";
 			String name ="オリップsd";

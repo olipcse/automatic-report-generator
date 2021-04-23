@@ -1,13 +1,14 @@
 package com.ops.reportgenerator.entitites;
 
+import java.io.FileInputStream;
 
-
+import org.springframework.web.multipart.MultipartFile;
 
 public class GetDoc {
 private String date;
 private String name;
 private int counter;
-private Object file;
+private MultipartFile file;
 public String getDate() {
 	return date;
 }
@@ -26,11 +27,13 @@ public int getCounter() {
 public void setCounter(int counter) {
 	this.counter = counter;
 }
-public Object getFile() {
+public MultipartFile getFile() {
 	return file;
 }
-public void setFile(Object file) {
+public void setFile(MultipartFile file) {
 	this.file = file;
 }
+
+
  
 }
