@@ -1,4 +1,4 @@
-package com.ops.reportgenerator;
+package com.ops.reportgenerator.controller;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,21 +11,26 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
-public class ReportGeneratorApplication {
-	public static String output = "rest-with-spring.docx";
-	public static void test() throws Exception{
+import com.ops.reportgenerator.entitites.GetDoc;
+
+@RestController
+@RequestMapping("/changeReport")
+public class FileChanger {
+	@PostMapping(value="/single_download",consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public static void test(@RequestBody GetDoc body) throws Exception{
 
 //		   System.out.println(extractor.getText());
 		System.out.println("hdshgfsgfh");
@@ -105,15 +110,4 @@ public class ReportGeneratorApplication {
 
 	}
 	
-	public static void main(String[] args) {
-		
-		try {
-			test();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		SpringApplication.run(ReportGeneratorApplication.class, args);
-	}
-
 }
